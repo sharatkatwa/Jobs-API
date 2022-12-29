@@ -1,3 +1,8 @@
+#### Visit api
+```link
+https://jobs-api.cyclic.app/
+```
+
 #### Setup
 
 ```bash
@@ -15,14 +20,6 @@ npm install && npm start
 
 - auth.js
 - jobs.js
-
-#### User Model
-
-Email Validation Regex
-
-```regex
-/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-```
 
 #### Register User
 
