@@ -23,19 +23,31 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 const authenticateUser = require('./middleware/authentication');
 
 app.set('trust proxy', 1);
+app.use(express.json());
+app.use(helmet());
+app.use(cors());
+app.use(xss());
 app.use(
   rateLimiter({
     widowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMS
   })
 );
-app.use(express.json());
-app.use(helmet());
-app.use(cors());
-app.use(xss());
+
+// DB connection
+const port = process.env.PORT || 3000;
+
+const startDB = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    console.log('DB connection successful');
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // routes
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Jobs API');
 });
 app.use('/api/v1/auth', authRouter);
@@ -44,17 +56,6 @@ app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
-
-const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URI);
-    app.listen(port, () =>
-      console.log(`Server is listening on port ${port}...`)
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-start();
+startDB().then(() => {
+  app.listen(port, () => console.log(`Server is listening on port ${port}...`));
+});
