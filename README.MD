@@ -1,7 +1,5 @@
 #### Visit api
-```link
 https://jobs-api.cyclic.app/
-```
 
 #### Setup
 
